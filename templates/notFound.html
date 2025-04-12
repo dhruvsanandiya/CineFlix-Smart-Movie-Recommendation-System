@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CineFlix | Not Found</title>
+    <!-- Favicon Links (Update path if needed to match Flask static folder structure) -->
+    <link rel="apple-touch-icon" sizes="180x180"
+        href="{{ url_for('static', filename='favicon/apple-touch-icon.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32"
+        href="{{ url_for('static', filename='favicon/favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16"
+        href="{{ url_for('static', filename='favicon/favicon-16x16.png') }}">
+    <link rel="manifest" href="{{ url_for('static', filename='favicon/site.webmanifest') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon/favicon.ico') }}">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(to bottom, #1c1c1c, #3a0e0e);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .main {
+            max-width: 600px;
+            background: #1a1a1a;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .movie-title {
+            color: #e50914;
+            font-weight: 600;
+        }
+
+        #suggestions {
+            margin-top: 1.5rem;
+            font-size: 1.05rem;
+            color: #ddd;
+        }
+
+        ul {
+            list-style: none;
+            margin-top: 1rem;
+            padding: 0;
+        }
+
+        ul li {
+            background: #292929;
+            padding: 0.7rem;
+            margin: 0.5rem 0;
+            border-left: 5px solid #e50914;
+            border-radius: 6px;
+            text-align: left;
+        }
+
+        #back_btn {
+            background: #e50914;
+            color: white;
+            padding: 0.9rem 2rem;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 2rem;
+            transition: background 0.3s ease;
+        }
+
+        #back_btn:hover {
+            background: #b0060f;
+        }
+
+        .icon {
+            font-size: 2rem;
+            color: #e50914;
+            margin-bottom: 1rem;
+        }
+
+        @media screen and (max-width: 600px) {
+            .main {
+                padding: 1.5rem;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            #back_btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main">
+        <div class="icon">
+            <i class="fas fa-exclamation-triangle"></i>
+        </div>
+        <h1>Oops! We couldn't find "<span class="movie-title">{{ name }}</span>"</h1>
+        <input type="hidden" value="{{ name }}" id="movie_name" readonly />
+        <div id="suggestions">Searching for similar titles...</div>
+        <button id="back_btn" onclick="goBack()"><i class="fas fa-arrow-left"></i> Back to Home</button>
+    </div>
+
+    <script type="text/javascript">
+        const all_title = { all_titles, tojson, safe };
+
+        function goBack() {
+            window.history.back();
+        }
+
+        function checkSimilarity() {
+            const input = document.getElementById("movie_name").value.toLowerCase();
+            const matches = [];
+
+            for (let i = 0; i < all_titles.length; i++) {
+                const title = all_titles[i];
+                const score = similarity(input, title.toLowerCase());
+                if (score >= 0.8) {
+                    matches.push([title, score]);
+                }
+            }
+
+            matches.sort((a, b) => b[1] - a[1]);
+
+            let suggestionBox = document.getElementById("suggestions");
+
+            if (matches.length === 0) {
+                suggestionBox.innerHTML = "No similar movies found. Please check the spelling.";
+            } else {
+                let suggestionList = "<strong>Did you mean:</strong><ul>";
+                matches.slice(0, 5).forEach(match => {
+                    suggestionList += `<li><i class="fas fa-film"></i> ${match[0]}</li>`;
+                });
+                suggestionList += "</ul>";
+                suggestionBox.innerHTML = suggestionList;
+            }
+        }
+
+        function similarity(a, b) {
+            const tfA = termFreqMap(a);
+            const tfB = termFreqMap(b);
+            const dict = {};
+            addToDict(tfA, dict);
+            addToDict(tfB, dict);
+
+            const vecA = vectorize(tfA, dict);
+            const vecB = vectorize(tfB, dict);
+
+            return dot(vecA, vecB) / (magnitude(vecA) * magnitude(vecB));
+        }
+
+        function termFreqMap(str) {
+            const freq = {};
+            for (let char of str) {
+                freq[char] = (freq[char] || 0) + 1;
+            }
+            return freq;
+        }
+
+        function addToDict(map, dict) {
+            for (let key in map) {
+                dict[key] = true;
+            }
+        }
+
+        function vectorize(map, dict) {
+            const vector = [];
+            for (let key in dict) {
+                vector.push(map[key] || 0);
+            }
+            return vector;
+        }
+
+        function dot(a, b) {
+            return a.reduce((acc, val, i) => acc + val * b[i], 0);
+        }
+
+        function magnitude(vec) {
+            return Math.sqrt(vec.reduce((acc, val) => acc + val * val, 0));
+        }
+
+        // Run similarity check on load
+        checkSimilarity();
+    </script>
+</body>
+
+</html>

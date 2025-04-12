@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>CineFlix | {{ search_name }}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Favicon Links (Update path if needed to match Flask static folder structure) -->
+  <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='favicon/apple-touch-icon.png') }}">
+  <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='favicon/favicon-32x32.png') }}">
+  <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='favicon/favicon-16x16.png') }}">
+  <link rel="manifest" href="{{ url_for('static', filename='favicon/site.webmanifest') }}">
+  <link rel="shortcut icon" href="{{ url_for('static', filename='favicon/favicon.ico') }}">
+
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Outfit', sans-serif;
+    }
+
+    body {
+      background: radial-gradient(circle at top left, #1f1f1f, #0f0f0f);
+      color: #f0f0f0;
+      min-height: 100vh;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h2 {
+      text-align: center;
+      font-size: 2rem;
+      font-weight: 600;
+      margin-bottom: 2rem;
+      color: #f5f5f5;
+    }
+
+    .highlight {
+      color: #ff3c38;
+      font-weight: 700;
+    }
+
+    .movie-container {
+      background-color: rgba(255, 255, 255, 0.05);
+      border-radius: 16px;
+      padding: 2rem;
+      max-width: 1000px;
+      width: 100%;
+      box-shadow: 0 0 25px rgba(255, 255, 255, 0.05);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    thead {
+      background-color: #ff3c38;
+    }
+
+    th,
+    td {
+      padding: 1rem;
+      text-align: left;
+    }
+
+    th {
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: #fff;
+    }
+
+    td {
+      font-size: 1rem;
+      color: #ddd;
+    }
+
+    tr {
+      background-color: rgba(255, 255, 255, 0.03);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    tr:hover {
+      background-color: rgba(255, 255, 255, 0.08);
+    }
+
+    a {
+      color: #1db954;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    a:hover {
+      color: #1ed760;
+      text-decoration: underline;
+    }
+
+    #back_btn {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.8rem 1.5rem;
+      background-color: #ff3c38;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      margin-bottom: 2rem;
+      transition: background 0.3s ease;
+      gap: 0.5rem;
+    }
+
+    #back_btn:hover {
+      background-color: #cc1e1e;
+    }
+
+    @media (max-width: 768px) {
+      .movie-container {
+        padding: 1rem;
+      }
+
+      h2 {
+        font-size: 1.5rem;
+      }
+
+      table,
+      th,
+      td {
+        font-size: 0.95rem;
+      }
+
+      #back_btn {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <button id="back_btn" onclick="window.history.back()">
+    <i class="fas fa-arrow-left"></i> Back to Home
+  </button>
+
+  <div class="movie-container">
+    <h2><i class="fas fa-film"></i> Recommendations for <span class="highlight">"{{ search_name }}"</span></h2>
+
+    <table class="movie_table">
+      <thead>
+        <tr>
+          <th><i class="fas fa-clapperboard"></i> Movie Title</th>
+          <th><i class="fas fa-calendar-alt"></i> Release Date</th>
+        </tr>
+      </thead>
+      <tbody class="table_body">
+        {% for name, homepage, date in movie_data %}
+        <tr>
+          <td><a href="{{ homepage }}" target="_blank"><i class="fas fa-link"></i> {{ name }}</a></td>
+          <td>{{ date }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+</body>
+
+</html>

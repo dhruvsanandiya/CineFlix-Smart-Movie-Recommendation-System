@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>CineFlix | Smart Movie Recommendations</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Favicon Links (Update path if needed to match Flask static folder structure) -->
+  <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='favicon/apple-touch-icon.png') }}">
+  <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='favicon/favicon-32x32.png') }}">
+  <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='favicon/favicon-16x16.png') }}">
+  <link rel="manifest" href="{{ url_for('static', filename='favicon/site.webmanifest') }}">
+  <link rel="shortcut icon" href="{{ url_for('static', filename='favicon/favicon.ico') }}">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
+  <!-- Font Awesome for icons -->
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Outfit', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(to bottom, rgba(0, 0, 0, 0.8), rgba(10, 10, 10, 0.95)),
+      url('{{ url_for("static", filename="builtin/background.jpg") }}') no-repeat center center/cover;
+      min-height: 100vh;
+      color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem;
+    }
+
+    h2 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    .subheading {
+      font-weight: 300;
+      margin-bottom: 2rem;
+      text-align: center;
+      font-size: 1rem;
+      color: #ccc;
+    }
+
+    form {
+      background: rgba(0, 0, 0, 0.7);
+      padding: 2rem;
+      border-radius: 1rem;
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.6);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.2rem;
+      width: 90%;
+      max-width: 500px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 1rem;
+      border-radius: 10px;
+      border: none;
+      font-size: 1rem;
+    }
+
+    input[type="submit"],
+    input[type="reset"] {
+      padding: 0.8rem 2rem;
+      font-size: 1rem;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      background-color: #e50914;
+      color: white;
+      transition: background 0.3s ease;
+    }
+
+    input[type="submit"]:hover,
+    input[type="reset"]:hover {
+      background-color: #b20710;
+    }
+
+    .credits {
+      margin-top: 2rem;
+      font-size: 0.9rem;
+      color: #bbbbbb;
+      text-align: center;
+    }
+
+    .fa-film {
+      color: #e50914;
+      margin-right: 0.5rem;
+    }
+
+    @media screen and (max-width: 600px) {
+      h2 {
+        font-size: 1.8rem;
+      }
+
+      .subheading {
+        font-size: 0.95rem;
+      }
+
+      form {
+        padding: 1.5rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <h2><i class="fas fa-film"></i>CineFlix</h2>
+  <p class="subheading">Discover movies similar to the ones you love 🎬</p>
+
+  <form action="{{ url_for('main') }}" method="POST">
+    <input type="text" name="movie_name" placeholder="Type a movie title (e.g. Inception)" required />
+    <input type="submit" value="Recommend">
+    <input type="reset" value="Clear">
+  </form>
+
+  <p class="credits">* Powered by a content-based recommendation engine using NLP & ML</p>
+
+</body>
+
+</html>

@@ -1,0 +1,14 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+
+# Virtual environment
+.venv/
+
+# Environment files
+.env
+
+# Heroku
+Procfile
+
+# Ignore site.webmanifest (optional)
+static/favicon/site.webmanifest

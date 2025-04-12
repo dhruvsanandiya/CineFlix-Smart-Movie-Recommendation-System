@@ -1,0 +1,6 @@
+Flask==2.3.3
+pandas==2.2.1
+numpy==1.26.4
+scikit-learn==1.4.1.post1
+gunicorn==21.2.0  # For deployment on platforms like Heroku
+python-dotenv==1.0.1  # For loading environment variables from .env
