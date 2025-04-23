@@ -7,8 +7,5 @@ __pycache__/
 # Environment files
 .env
 
-# Heroku
-Procfile
-
 # Ignore site.webmanifest (optional)
 static/favicon/site.webmanifest
